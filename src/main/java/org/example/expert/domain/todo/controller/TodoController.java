@@ -10,6 +10,8 @@ import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
 import org.example.expert.domain.todo.service.TodoService;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,9 +38,9 @@ public class TodoController {
     public ResponseEntity<Page<TodoResponse>> getTodos(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam String weather,
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate
+            @RequestParam(required = false) String weather,
+            @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate endDate
     ) {
         return ResponseEntity.ok(todoService.getTodos(page, size, weather, startDate, endDate));
     }
