@@ -93,8 +93,8 @@ public class TodoService {
                         todoSearchRequest.nickname(), pageable)
                 .map(item -> new TodoSearchResponse(
                         item.title(),
-                        item.commentCount(),
-                        item.managerCount())
+                        item.managerCount(), // 순서 수정: 매니저 수 먼저
+                        item.commentCount())
                 );
     }
 }
