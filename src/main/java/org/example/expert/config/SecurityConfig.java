@@ -44,9 +44,11 @@ public class SecurityConfig {
 
                 // 인증 & 인가 처리
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/actuator/info", "/actuator/metrics").hasRole(UserRole.ADMIN.name())
                         .anyRequest().authenticated())
 
                 // 예외 처리
