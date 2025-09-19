@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: expert
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+logging:
+  level:
+    org.example.expert.config.JwtFilter: DEBUG
+    org.example.expert: DEBUG
+    root: INFO
