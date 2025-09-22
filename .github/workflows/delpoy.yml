@@ -5,10 +5,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # =======================================================
-  # Job 1: Gradle 빌드
-  # =======================================================
-  build-jar:
+  # Job 1: Docker 이미지 빌드 및 ECR 푸시
+  docker-build-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,31 +24,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build -x test
 
-      # 빌드 결과물(.jar 파일)을 Artifacts로 업로드
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: application-jar # 아티팩트 이름
-          path: build/libs/*.jar # 업로드할 파일 경로
-
-  # =======================================================
-  # Job 2: Docker 이미지 빌드 및 ECR 푸시
-  # =======================================================
-  docker-build-push:
-    runs-on: ubuntu-latest
-    needs: build-jar # 'build' Job이 성공해야 실행됨
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      # 이전 Job에서 업로드한 .jar 파일을 다운로드
-      - name: Download JAR
-        uses: actions/download-artifact@v4
-        with:
-          name: application-jar
-          path: build/libs/ # 다운로드 받을 경로
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -66,9 +39,7 @@ jobs:
           docker build -t ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest .
           docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
 
-  # =======================================================
-  # Job 3: EC2에 배포
-  # =======================================================
+  # Job 2: EC2에 배포
   deploy-to-ec2:
     runs-on: ubuntu-latest
     needs: docker-build-push # 'docker-build-push' Job이 성공해야 실행됨
