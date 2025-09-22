@@ -1,9 +1,11 @@
 package org.example.expert.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.user.dto.request.UserChangePasswordRequest;
 import org.example.expert.domain.user.dto.response.UserResponse;
+import org.example.expert.domain.user.dto.response.UserSearchResponse;
 import org.example.expert.domain.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -28,5 +32,11 @@ public class UserController {
     public void changePassword(@AuthenticationPrincipal AuthUser authUser,
                                @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
         userService.changePassword(authUser.id(), userChangePasswordRequest);
+    }
+
+    // 닉네임을 이용한 유저 검색 API
+    @GetMapping("/users")
+    public ResponseEntity<UserSearchResponse> searchByNickname(@RequestParam String nickname) {
+        return ResponseEntity.ok(userService.searchByNickname(nickname));
     }
 }
