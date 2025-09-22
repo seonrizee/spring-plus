@@ -42,4 +42,4 @@ out/
 !/.env.example
 /docker-compose.prod.yml
 !/gradlew.bat
-!/gradlew
+!/gradlew!/gradle/wrapper/gradle-wrapper.properties
