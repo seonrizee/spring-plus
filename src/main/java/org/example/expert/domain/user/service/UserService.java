@@ -1,12 +1,14 @@
 package org.example.expert.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.expert.config.CacheType;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.user.dto.request.UserChangePasswordRequest;
 import org.example.expert.domain.user.dto.response.UserResponse;
 import org.example.expert.domain.user.dto.response.UserSearchResponse;
 import org.example.expert.domain.user.entity.User;
 import org.example.expert.domain.user.repository.UserRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +52,7 @@ public class UserService {
         }
     }
 
+    @Cacheable(key = "#nickname", value = CacheType.USER_BY_NICKNAME_CACHE_NAME)
     public UserSearchResponse searchByNickname(String nickname) {
 
         User byNickname = userRepository.findByNickname(nickname)
