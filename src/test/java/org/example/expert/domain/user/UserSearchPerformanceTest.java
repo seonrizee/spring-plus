@@ -25,7 +25,7 @@ class UserSearchPerformanceTest {
     void 닉네임으로_유저_검색_성능_측적_테스트() throws Exception {
 
         // 500만 건 데이터 중 존재하는 닉네임으로 검색
-        String existingNickname = "nick_2600000_02f209d5";
+        String existingNickname = "nick_2600000_baf23fbd";
 
         int iterations = 10; // 정확한 측정을 위해 10번 반복하여 평균값 사용
         List<Long> durations = new ArrayList<>();
